@@ -85,7 +85,7 @@ if selection == "Home":
     After restricting data to the years **2021 to 2023**, the final **JMMI dataset** includes **21 indicators** and over **4,700 observations**, ensuring alignment with the HSOS dataset.
     """)
 
-# 2. EDA PAGE
+# 2. EDA PAGE -> Report 3 selection of images - Interactive plots?
 elif selection == "EDA":
     st.title("Exploratory Data Analysis")
     st.subheader("Key Visualizations from Report 1")
