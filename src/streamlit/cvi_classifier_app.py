@@ -15,7 +15,7 @@ selection = st.sidebar.radio("Go to", pages)
 # 1. HOME PAGE
 if selection == "Home":
     st.title("CVI - Classifier")
-    st.subheader("Context and Objectives")
+    st.subheader("General Overview")
 
     st.write("""
     ## Context
@@ -25,8 +25,8 @@ if selection == "Home":
 
     Syria, experiencing one of the largest humanitarian crises in recent decades, presents a complex ecosystem of NGOs supporting communities. The availability of humanitarian data in Syria is substantial compared to other conflict zones, making it a suitable case for this project.
 
-    st.image("src/streamlit/images/1_country-syria.png", caption="Humanitarian Data in Syria")
-
+    st.image("src/streamlit/images/1_country-syria.png", caption="Syria")
+             
     NGOs such as [UNHCR](https://www.unhcr.org) and [IMPACT REACH](https://www.impact-initiatives.org/where-we-work/syria/) Initiatives have built a robust **database** over the past six to seven years, updated monthly, describing thousands of **communities** with internally displaced people (IDPs).
     """)
 
@@ -56,17 +56,27 @@ if selection == "Home":
     st.write("""
     ## Framework
     The **HSOS dataset** contains monthly reports from **2019 to 2024**, detailing information across **11 indicator groups**:
-    1. **Demographics**
-    2. **Shelter**
-    3. **Electricity & Non-Food Items (NFIs)**
-    4. **Food Security**
-    5. **Livelihoods**
-    6. **Water, Sanitation, and Hygiene (WASH)**
-    7. **Health**
-    8. **Education**
-    9. **Protection**
-    10. **Accountability & Humanitarian Assistance**
-    11. **Priority Needs**
+    """)
+    
+    # Define a single tab
+    tab1 = st.tabs(["HSOS Indicators"])
+
+    with tab1[0]:
+        st.write("""
+        The **HSOS dataset** contains monthly reports from **2019 to 2024**, detailing information across **11 indicator groups**:
+        
+        1. Demographics
+        2. Shelter
+        3. Electricity & Non-Food Items (NFIs)
+        4. Food Security
+        5. Livelihoods
+        6. Water, Sanitation, and Hygiene (WASH)
+        7. Health
+        8. Education
+        9. Protection
+        10. Accountability & Humanitarian Assistance
+        11. Priority Needs
+
     
     A total of **110 HSOS files** were initially analyzed. To maintain **data consistency**, the dataset was limited to reports from **2021 to 2023**, reducing the selection to **61 files**. Since no standardized catalog of questions exists across files, an **indicator selection process** was applied, retaining only those present in at least **57 of the 61 files**. The final dataset consists of **1,668 indicators** and **52,095 observations**.
     
