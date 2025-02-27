@@ -622,7 +622,9 @@ elif selection == "Prediction":
     - "logistic_model.pkl", 
     - "svm_model_base.pkl"
     - "xgboost_model_optimized.joblib"
-    note: some models are functional but couldn't be put in production because their individual sizes exceed 100mb. More specifically they are:
+    
+    **IMPORTANT**: some models are functional but couldn't be put in production because their individual sizes exceed 100mb. More specifically they are:
+    
     - "random_forest_model.pkl"
     - "random_forest_optimized.pkl"
     - "svm_model_optimized.pkl"
