@@ -442,7 +442,7 @@ elif selection == "Perspectives":
     """)
 
     # Closing Statement
-    st.markdown("**This project bridges AI and humanitarian efforts, offering an interpretable and scalable approach to aid distribution.**")
+    st.markdown("**This project bridges ML and humanitarian efforts, offering an interpretable and scalable approach to aid distribution.**")
 
 # 6. ABOUT PAGE
 elif selection == "About":
