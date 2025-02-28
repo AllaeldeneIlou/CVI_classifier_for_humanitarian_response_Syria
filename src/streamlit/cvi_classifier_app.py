@@ -404,42 +404,6 @@ elif selection == "Modeling":
         "(different categories of humanitarian assistance needed)."
     )
 
-    # Section: Deep Learning Models
-    st.markdown("## **Deep Learning Models**")
-    st.write("""
-    We experimented with **MLP, TabNet, Autoencoder + MLP, and CNN** for multi-label classification.  
-    """)
-
-    st.markdown("""
-    ### **Optimization & Challenges**
-    - **Hyperparameter tuning** improved MLP performance.  
-    - Deep learning models **struggled with interpretability and efficiency**.
-    - Despite capturing **complex patterns**, they were **less effective** for tabular data due to:
-    - **High computational cost**.
-    - **Sensitivity to hyperparameters**.
-    """)
-
-    st.markdown("""
-    ### **Final Decision**
-    - **XGBoost** outperformed deep learning models.
-    - Its **tree-based structure** handled tabular data more efficiently.
-    - It provided **better interpretability** and **stronger performance**.
-    """)
-
-    # Deep Learning Model Results - Table 13
-    data_dl = [
-        ["MLP", 0.02508, 0.47954, 0.80345, 0.73583],
-        ["MLP Tuned", 0.02397, 0.48027, 0.81587, 0.73963],
-        ["TabNET", 0.02856, 0.32815, 0.77748, 0.71669],
-        ["Autoencoder + MLP", 0.02759, 0.43861, 0.77921, 0.71669],
-        ["CNN Initial", 0.09867, 0.14681, 0.67523, 0.64481],
-        ["CNN Optimized", 0.07865, 0.19521, 0.74145, 0.64443]
-    ]
-    columns_dl = ["Model", "Hamming Loss", "F1-Score (Macro)", "F1-Score (Micro)", "Accuracy"]
-    st.table(pd.DataFrame(data_dl, columns=columns_dl))
-
-    st.markdown("<p style='text-align: center; font-style: italic;'>MultiTarget – Deep Learning Model Results</p>", unsafe_allow_html=True)
-
     st.header("Performance Metrics")
     st.write(
         "- **Hamming Loss**: Directly measures the fraction of misclassified labels in multi-label classification.\n"
@@ -535,6 +499,42 @@ elif selection == "Modeling":
 
     st.write("The table presents the impact of different feature importance thresholds on model performance. As the threshold increases, the number of selected features decreases significantly—from 340 at 0.001 to just 6 at 0.01.")
     st.write("Given this analysis, continuing with the 340 selected features is the optimal approach, as it retains strong predictive power while reducing dimensionality compared to using all features.")
+
+    # Section: Deep Learning Models
+    st.markdown("## **Deep Learning Models**")
+    st.write("""
+    We experimented with **MLP, TabNet, Autoencoder + MLP, and CNN** for multi-label classification.  
+    """)
+
+    st.markdown("""
+    ### **Optimization & Challenges**
+    - **Hyperparameter tuning** improved MLP performance.  
+    - Deep learning models **struggled with interpretability and efficiency**.
+    - Despite capturing **complex patterns**, they were **less effective** for tabular data due to:
+    - **High computational cost**.
+    - **Sensitivity to hyperparameters**.
+    """)
+
+    st.markdown("""
+    ### **Final Decision**
+    - **XGBoost** outperformed deep learning models.
+    - Its **tree-based structure** handled tabular data more efficiently.
+    - It provided **better interpretability** and **stronger performance**.
+    """)
+
+    # Deep Learning Model Results - Table 13
+    data_dl = [
+        ["MLP", 0.02508, 0.47954, 0.80345, 0.73583],
+        ["MLP Tuned", 0.02397, 0.48027, 0.81587, 0.73963],
+        ["TabNET", 0.02856, 0.32815, 0.77748, 0.71669],
+        ["Autoencoder + MLP", 0.02759, 0.43861, 0.77921, 0.71669],
+        ["CNN Initial", 0.09867, 0.14681, 0.67523, 0.64481],
+        ["CNN Optimized", 0.07865, 0.19521, 0.74145, 0.64443]
+    ]
+    columns_dl = ["Model", "Hamming Loss", "F1-Score (Macro)", "F1-Score (Micro)", "Accuracy"]
+    st.table(pd.DataFrame(data_dl, columns=columns_dl))
+
+    st.markdown("<p style='text-align: center; font-style: italic;'>MultiTarget – Deep Learning Model Results</p>", unsafe_allow_html=True)
 
     st.header("Interpretability")
     st.subheader("Error Analysis")
