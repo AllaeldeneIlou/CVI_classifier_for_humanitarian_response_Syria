@@ -69,38 +69,22 @@ if selection == "Home":
         ## Framework
         The **HSOS dataset** contains monthly reports from **2019 to 2024**, detailing information across **11 indicator groups**:
     """)
-    
-    # Define a single tab
-    tabs = st.tabs(["HSOS Indicators"])
 
-    with tabs[0]:
-        # Centered Content with Custom Styling
-        st.markdown("""
-            <div style="text-align: center;">
-                <h3>The <b>HSOS dataset</b> contains monthly reports from <b>2019 to 2024</b>, detailing information across <b>11 indicator groups</b>:</h3>
-            </div>
-        """, unsafe_allow_html=True)
-        
-        # Centered List in Markdown with a fixed-width box
-        st.markdown("""
-            <div style="display: flex; justify-content: center;">
-                <div style="text-align: left; background-color: #f8f9fa; padding: 15px; border-radius: 10px; width: 50%;">
-                    <ol>
-                        <li>Demographics</li>
-                        <li>Shelter</li>
-                        <li>Electricity & Non-Food Items (NFIs)</li>
-                        <li>Food Security</li>
-                        <li>Livelihoods</li>
-                        <li>Water, Sanitation, and Hygiene (WASH)</li>
-                        <li>Health</li>
-                        <li>Education</li>
-                        <li>Protection</li>
-                        <li>Accountability & Humanitarian Assistance</li>
-                        <li>Priority Needs</li>
-                    </ol>
-                </div>
-            </div>
-        """, unsafe_allow_html=True)
+    # Markdown bullet points
+    st.markdown("""
+        - **Demographics**
+        - **Shelter**
+        - **Electricity & Non-Food Items (NFIs)**
+        - **Food Security**
+        - **Livelihoods**
+        - **Water, Sanitation, and Hygiene (WASH)**
+        - **Health**
+        - **Education**
+        - **Protection**
+        - **Accountability & Humanitarian Assistance**
+        - **Priority Needs**
+    """)
+
 
     # Additional Description Below
     st.write("""    
@@ -399,8 +383,18 @@ elif selection == "EDA":
 # 3. MODELING PAGE
 elif selection == "Modeling":
 
-    # Title 1 (Biggest)
+    # Title 0 (Biggest)
     st.title("MODELING")
+
+    # Title 1 
+    st.header("Data Preprocessing & Feature Engineering")
+    st.write("""
+    - **Categorical Encoding:** One-Hot Encoding was applied to (Governorate, Month, etc.), while Frequency Encoding was used for District to reduce dimensionality.
+    - **Feature Scaling:** StandardScaler was applied to price-related columns, and Min-Max normalization was used for numerical features exceeding 1 to ensure consistency across scales.
+    - **Currency Standardization:** Prices from different regions were converted to USD.
+    - **Feature Selection:** The dataset initially contained 975 features. After applying a 20% missing value threshold, it was reduced to 789. Further reduction to 497 features was achieved by removing low-variance features (threshold = 0.01).
+    - **Handling Missing Values:** Missing values were imputed using KNN Imputation (k=5) to preserve the underlying data distribution.
+    """)
 
     # Title 2 Sections
     st.header("Multi Output Classification")
@@ -409,6 +403,42 @@ elif selection == "Modeling":
         "where each instance may belong to multiple categories simultaneously "
         "(different categories of humanitarian assistance needed)."
     )
+
+    # Section: Deep Learning Models
+    st.markdown("## **Deep Learning Models**")
+    st.write("""
+    We experimented with **MLP, TabNet, Autoencoder + MLP, and CNN** for multi-label classification.  
+    """)
+
+    st.markdown("""
+    ### **Optimization & Challenges**
+    - **Hyperparameter tuning** improved MLP performance.  
+    - Deep learning models **struggled with interpretability and efficiency**.
+    - Despite capturing **complex patterns**, they were **less effective** for tabular data due to:
+    - **High computational cost**.
+    - **Sensitivity to hyperparameters**.
+    """)
+
+    st.markdown("""
+    ### **Final Decision**
+    - **XGBoost** outperformed deep learning models.
+    - Its **tree-based structure** handled tabular data more efficiently.
+    - It provided **better interpretability** and **stronger performance**.
+    """)
+
+    # Deep Learning Model Results - Table 13
+    data_dl = [
+        ["MLP", 0.02508, 0.47954, 0.80345, 0.73583],
+        ["MLP Tuned", 0.02397, 0.48027, 0.81587, 0.73963],
+        ["TabNET", 0.02856, 0.32815, 0.77748, 0.71669],
+        ["Autoencoder + MLP", 0.02759, 0.43861, 0.77921, 0.71669],
+        ["CNN Initial", 0.09867, 0.14681, 0.67523, 0.64481],
+        ["CNN Optimized", 0.07865, 0.19521, 0.74145, 0.64443]
+    ]
+    columns_dl = ["Model", "Hamming Loss", "F1-Score (Macro)", "F1-Score (Micro)", "Accuracy"]
+    st.table(pd.DataFrame(data_dl, columns=columns_dl))
+
+    st.markdown("<p style='text-align: center; font-style: italic;'>MultiTarget – Deep Learning Model Results</p>", unsafe_allow_html=True)
 
     st.header("Performance Metrics")
     st.write(
@@ -601,34 +631,33 @@ elif selection == "Prediction":
 
     st.title("PREDICTION")
 
-    """
-    This page is dedicated for performing live predictions using the multi-output classifier models.
-    The prediction process runs actually in the background based on the user's selected preferences, therefore, the waiting time might take up to a few minutes for some models.
-    """
-    """
-    Once you select the model and the location preferences, the compute will start, and the and the "Display predictions" botton will appear.
-    The results will be shown only after the user hits the botton "Display predictions".
-    """
+    st.write("""
+    This page allows **live predictions** using multi-output classifier models. The process runs **in the background**, based on user-selected preferences, and may take a few minutes for some models.
+    """)
+    
+    st.write("""
+    Once you select a **model** and **location**, computation begins automatically. When ready, the **"Display Predictions"** button will appear. Results are shown only after clicking the button.
+    """)
+    st.write("""
+    We use **8 models**, each predicting assistance needs **independently**. Since a camp may require **one or multiple types of aid**, we implemented a **MultiOutputClassifier**. You can select **one model** from the list below:
+    """)
 
     # Model selection
     title = "### Select a Model"
 
-    """
-    We are working with 8 models that predit the classes separately. So a camp can need any any class or combination of classes, therefore we used the MultiOutputClassifier.
-    You will be able to select a single model out of the following list:
-
+    st.write("""
     - "best_xgb_340_features.pkl"
-    - "best_xgb_model_with_thresholds.pkl" (best performing model)
+    - "best_xgb_model_with_thresholds.pkl" (**best performing model**)
     - "logistic_model.pkl", 
     - "svm_model_base.pkl"
     - "xgboost_model_optimized.joblib"
     
-    **IMPORTANT**: some models are functional but couldn't be put in production because their individual sizes exceed 100mb. More specifically they are:
+    **IMPORTANT**: Some models are functional but not in production because their file sizes exceed 100MB. These include:
     
     - "random_forest_model.pkl"
     - "random_forest_optimized.pkl"
     - "svm_model_optimized.pkl"
-    """
+    """)
 
     st.markdown(title)
     model_list = [
@@ -671,19 +700,26 @@ elif selection == "Prediction":
 
     # Location selection
     st.markdown("### Select the location")
-    """
-    The location attributes (Governorate, Community, and Camps) are organized hierarchially in one direction.
-    So The choice of a governorate will narrow down the choices of community to include only communities that are within this governorate. Same goes for camps.
-    We have skipped intermediary location attributes such as district and sub-district to avoid complication.
-    """
-    """
-    Syria has 16 governorates. The available data coveres only six governorates, which are: Al-Hasakeh, Aleppo, Ar-Raqqa, Deir-ez-Zor, Hama, and Idleb.
-    The areas of these governorates exist under the areas of Northwest Syria (NWS) and Northeast Syria (NES) which were the geopolitical regions hosting opposition and Kurdish controlled areas before December 2024.
-    """
-    """
-    Once the governorate is selected a nawrrowed down list of the available communities will be within the dropdown list. Only one community could be selected. a Community correspond to a Locality with the p-code used in the UN coding for localities in Syria
-    Camps are the entrypoints in each locality.
-    """
+
+    st.write("""
+    Locations are structured **hierarchically**:
+    - **Governorate → Community → Camps**
+    - Selecting a **governorate** filters available **communities**.
+    - Selecting a **community** filters available **camps**.
+    - **Districts and sub-districts** are excluded for simplicity.
+    """)
+
+    st.write("""
+    Out of **16 Syrian governorates**, the dataset covers only **six**:
+    **Al-Hasakeh, Aleppo, Ar-Raqqa, Deir-ez-Zor, Hama, and Idleb**.
+    These regions fall under **Northwest Syria (NWS) and Northeast Syria (NES)**, which were opposition and Kurdish-controlled areas before December 2024.
+    """)
+
+    st.write("""
+    After selecting a **governorate**, a **filtered list of communities** appears. You can choose **only one community**, each mapped to a **Locality (p-code system used by the UN)**.
+    **Camps** serve as entry points for each locality.
+    """)
+    
     # Governorate selection
     governorates = sorted(production_df_location_filtering["Governorate"].unique())
     user_selected_governorate = st.selectbox("Choose a Governorate:", governorates)
