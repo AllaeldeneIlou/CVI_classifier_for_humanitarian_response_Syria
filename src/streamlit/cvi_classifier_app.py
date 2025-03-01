@@ -156,24 +156,21 @@ elif selection == "EDA":
         The following charts highlight the geographic distribution of assessed populations 
         across governorates and districts.
         """)
-        col1, col2 = st.columns([1, 2], gap='large')
-        with col1:
-            st.image(image_dir / "4_Demographic_distribution_across_governorate.png", caption="Demographic distribution across governorates", width=int(0.5 * 800))
-        with col2:
-            st.markdown(
+        
+        st.markdown(
             "This **first pie chart illustrates the percentage distribution of the assessed population across governorates.** "
             "Idleb and Aleppo dominate, with similar proportions (**31.3%** and **30.8%**, respectively), while **Deir-ez-Zor** and other smaller regions contribute minimally to the dataset."
         )
 
-        col3, col4 = st.columns([1, 1], gap='large')
-        with col3:
-            st.image(image_dir / "5_Percentage_distribution_districts.png", caption="Percentage distribution across districts", width=int(0.8 * 800))
-        with col4:
-            st.markdown(
+        st.image(image_dir / "4_Demographic_distribution_across_governorate.png", caption="Demographic distribution across governorates", width=int(0.5 * 800))
+      
+        st.markdown(
             "This **second pie chart shows the distribution across districts.** "
             "A significant proportion (**36.1%**) is categorized as **'Other'** (sum of categories below 5%), followed by **Ar-Raqqa (10.9%)** and **Harim (9.7%)**. "
             "This highlights the geographic spread and variability in representation at the district level, which includes **23 unique values**."
         )
+        
+        st.image(image_dir / "5_Percentage_distribution_districts.png", caption="Percentage distribution across districts", width=int(0.8 * 800))
 
     # Tab 3: Data Quality Assessment
     # Missing Data
@@ -550,31 +547,28 @@ elif selection == "Modeling":
     st.write("Overall, the model performs well on frequently occurring labels but still struggles with rare ones, reinforcing the need for further optimization, such as threshold tuning, or alternative loss functions tailored for imbalanced multi-label classification.")
 
     st.subheader("Per-Class probability Threshold Optimization for XGBoost")
-    st.write("XGBoost (Per-Class Thresholds) Results:")
-    st.write("Hamming Loss: 0.03136089388977124")
-    st.write("F1-Score (Macro): 0.6365977808806301")
-    st.write("F1-Score (Micro): 0.802532913146984")
-    st.write("Accuracy: 0.7796532462579")
-    st.write("Optimized Per-Class Thresholds:")
-    st.write("""[
-    "Shelter": 0.29999999999999993,
-    "Health": 0.30000000000000004,
-    "NFI's": 0.3,
-    "Electricity assistance": 0.3,
-    "Food, nutrition": 0.49999999999999994,
-    "Agricultural supplies": 0.3,
-    "Livelihood support": 0.3,
-    "Wash": 0.3,
-    "Winterization": 0.3,
-    "Legal services": 0.3,
-    "GBV services": 0.3,
-    "CP services": 0.35,
-    "Explosive hazard risk awareness or removal of explosive contamination": 0.3,
-    "Mental health psychological support": 0.3,
-    "Cash assistance vouchers_pre cash in hand": 0.35
-    ]""")
-    st.write("The per-class threshold tuning has notably improved performance, especially for macro F1-score and micro F1-score, while maintaining accuracy at a similar level. Some common labels (e.g., Food, nutrition, Cash assistance, CP services) have higher thresholds (0.35 - 0.5). This prevents over-prediction and reduces false positives.")
-    st.write("Some minority labels (e.g., GBV services, Electricity assistance, NFIs, WASH) have lower thresholds (0.3 - 0.35). This improves recall, helping to detect rare events better.")
+
+    # XGBoost Model Results - Table
+    data_xgb = [
+        ["XGBoost (0.001 feature selec.)", 0.01961, 0.58088, 0.84921, 0.78079],
+        ["XGBoost (0.001+Per Class Threshold)", 0.019538, 0.63569, 0.85404, 0.779279]
+    ]
+    columns_xgb = ["Model", "Hamming Loss", "F1-Score (Macro)", "F1-Score (Micro)", "Accuracy"]
+    st.table(pd.DataFrame(data_xgb, columns=columns_xgb))
+
+    # Optimized Per-Class Thresholds - Table
+    thresholds = {
+        "Shelter": 0.4, "Health": 0.4, "NFIs": 0.3, "Electricity assistance": 0.3,
+        "Food, nutrition": 0.5, "Agricultural supplies": 0.3, "Livelihood support": 0.3,
+        "Education": 0.4, "WASH": 0.3, "Winterisation": 0.3, "Legal services": 0.3,
+        "GBV services": 0.3, "CP services": 0.35, 
+        "Explosive hazard risk awareness or removal of explosive contamination": 0.3,
+        "Mental health psychological support": 0.3, "Cash assistance vouchers or cash in hand": 0.35
+    }
+
+    threshold_df = pd.DataFrame(thresholds.items(), columns=["Category", "Threshold"])
+    st.table(threshold_df)
+
 
     st.subheader("SHAP analysis using XGBoost")
 
@@ -639,7 +633,7 @@ elif selection == "Prediction":
     Once you select a **model** and **location**, computation begins automatically. When ready, the **"Display Predictions"** button will appear. Results are shown only after clicking the button.
     """)
     st.write("""
-    We use **8 models**, each predicting assistance needs **independently**. Since a camp may require **one or multiple types of aid**, we implemented a **MultiOutputClassifier**. You can select **one model** from the list below:
+    We use **5 models**, each predicting assistance needs **independently**. Since a camp may require **one or multiple types of aid**, we implemented a **MultiOutputClassifier**. You can select **one model** from the list below:
     """)
 
     # Model selection
@@ -652,7 +646,7 @@ elif selection == "Prediction":
     - "svm_model_base.pkl"
     - "xgboost_model_optimized.joblib"
     
-    **IMPORTANT**: Some models are functional but not in production because their file sizes exceed 100MB. These include:
+    **Note**: Some other models were trained but not used in production due to their performance are:
     
     - "random_forest_model.pkl"
     - "random_forest_optimized.pkl"
