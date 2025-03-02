@@ -887,12 +887,29 @@ elif selection == "About":
     st.title("ABOUT")
 
     # Project Contributors
-    st.subheader("👥 Project Team")
+    st.subheader("👥 Team")
+    
     st.write("""
-    - **Ghiath Al Jebawi** - Data Scientist with 5 years of experience in humanitarian work in Syria, particularly in IDP camps.
-    - **Bercin Ersoz** - Statistician specializing in data management, previously worked at the Turkish Central Bank.
-    - **Allaeldene Ilou** - IT Project Manager focused on humanitarian and environmental projects.
-    - **Caspar Stordeur** - Social scientist with expertise in data transformation, demographics, and community dynamics.
+    **Mentor and Team Manager**:
+    """
+    """
+    - [**Romain Lesieur**](https://www.linkedin.com/in/romain-lesieur-43593298/) -
+    AI design and development, team management, public-private relations and consulting based on a crossdisciplinary profile: agri-engineer, data scientist, manager with an experience of 14 years.
+    """)
+    
+    st.write("""
+    **Project Contributors**:
+    """)
+
+    st.write("""
+    - [**Ghiath Al Jebawi**](https://www.linkedin.com/in/ghiathaljebawi) is a development systems consultant. With his background as an urbanist, researcher, and data scientist, 
+    practiced in development cooperation sector, he focuses on data driven conflict and community development solutions.
+    - [**Bercin Ersoz**](https://www.linkedin.com/in/bercinersoz/) is an experienced Data Analyst with an MBA and a background at the Central Bank of Turkey. Expertise in Tableau, SQL, and Python for large-scale data processing and dashboard creation. 
+    Developed data-driven automated reporting pipelines and optimized decision-making processes. Passionate about driving data-driven strategies and leveraging predictive analytics in Machine Learning and AI.
+    - [**Allaeldene Ilou**](https://www.linkedin.com/in/allaeldene-ilou) is a Technical Product Manager with a multidisciplinary background in broadcasting systems, media management, and audio communication. 
+    He specializes in predictive modeling and machine learning, with experience in bridging technical and business needs, optimizing workflows, and developing data-driven products to enhance operational efficiency.
+    - [**Caspar Stordeur**](https://www.linkedin.com/in/cstordeur) is a social scientist with a BSc in Economics and an MSc in Demography. His research focuses on migration, social inequality, mental health and suicide. Previously, 
+    he worked in the DataLab at the Max Planck Institute for Demographic Research, specializing in data-driven demographic analysis.
     """)
 
     # Data Sources
